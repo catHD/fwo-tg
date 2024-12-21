@@ -4,7 +4,7 @@ import {
   type CharacterAttributes,
   CharacterClass,
   type CharacterDynamicAttributes,
-} from '@/schemas/character';
+} from '@fwo/schemas';
 
 const calculateBaseAttributes = (
   { wis, int, con, dex, str }: CharacterAttributes,

@@ -1,24 +1,34 @@
 {
-  "name": "fwo-tg",
+  "name": "@fwo/core",
   "version": "0.3.1",
   "description": "FightWorld Telegram",
   "main": "index.js",
   "type": "module",
+  "workspaces": [
+    "src",
+    "app",
+    "schemas"
+  ],
   "scripts": {
     "start": "NODE_ENV=production bun src/fwo.ts",
-    "dev": "bun src/cli/dev.ts",
+    "dev": "bun run --filter '@fwo/*' dev",
     "test": "bun src/cli/test.ts -i",
     "generate:items": "bun src/cli/generateItems.ts",
     "reset-harks": "bun src/cli/resetHarks.ts",
-    "lint": "biome lint",
-    "format": "biome format",
-    "types": "tsc --noEmit"
+    "lint": "bun run --filter '@fwo/*' lint",
+    "format": "bun run --filter '@fwo/*' format",
+    "types": "bun run --filter '@fwo/*' types"
   },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/catHD/fwo-tg.git"
   },
-  "keywords": ["fwo", "game", "nodejs", "mmorpg"],
+  "keywords": [
+    "fwo",
+    "game",
+    "nodejs",
+    "mmorpg"
+  ],
   "author": "FWO Team",
   "license": "ISC",
   "bugs": {
@@ -26,21 +36,10 @@
   },
   "homepage": "https://github.com/catHD/fwo-tg#readme",
   "dependencies": {
-    "@hono/zod-validator": "^0.4.1",
-    "@telegram-apps/init-data-node": "^1.1.1",
-    "hono": "^4.6.5",
-    "lodash": "^4.17.21",
-    "mongoose": "^8.8.0",
-    "telegraf": "^4.16.3",
-    "typescript": "^5.6.3",
-    "zod": "^3.23.8"
+    "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
-    "@types/bun": "^1.1.13",
-    "@types/lodash": "^4.17.10",
-    "@types/node": "^22.9.0",
-    "casual": "^1.6.2",
-    "csvtojson": "^2.0.10"
+    "@biomejs/biome": "^1.9.4",
+    "typescript": "^5.7.2"
   }
 }

@@ -1,0 +1,25 @@
+.slider {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  overflow: hidden;
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: calc(100% - 64px);
+  transform: translateX(calc(var(--slide, 0) * 100% * -1 + 32px));
+}
+
+.button {
+  cursor: pointer;
+}

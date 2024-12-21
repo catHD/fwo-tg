@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Scenes, Markup } from 'telegraf';
 import type {CharacterService} from '@/arena/CharacterService';
 import MagicService from '@/arena/MagicService';

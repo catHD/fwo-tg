@@ -6,7 +6,7 @@ import { times } from 'lodash';
 import { CharacterService } from '@/arena/CharacterService';
 import GameService from '@/arena/GameService';
 import TestUtils from '@/utils/testUtils';
-import chainLightning from './chainLightning';
+import { chainLightning } from './chainLightning';
 // npm t src/arena/magics/chainLightning.test.ts
 
 describe('chainLightning', () => {

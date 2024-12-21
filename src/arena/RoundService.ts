@@ -8,7 +8,7 @@ export enum RoundStatus {
   END_ORDERS = 'END_ORDERS',
   ENGINE = 'ENGINE',
   END_ROUND = 'END_ROUND',
-  TIMEOUT = 'TIMEOUT'
+  TIMEOUT = 'TIMEOUT',
 }
 
 interface Round {
@@ -36,7 +36,8 @@ export class RoundService {
    */
   get lastRound(): Round {
     return {
-      state: this.status, round: this.count,
+      state: this.status,
+      round: this.count,
     };
   }
 

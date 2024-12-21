@@ -1,10 +1,10 @@
 import arena from '@/arena';
-import { type Action, ActionService } from '@/arena/ActionService';
+import { type ActionKey, ActionService } from '@/arena/ActionService';
 import type Game from '@/arena/GameService';
 import config from '@/arena/config';
 import _ from 'lodash';
 
-type Stages = Readonly<(Action | Readonly<Action[]>)[]>;
+type Stages = Readonly<(ActionKey | Readonly<ActionKey[]>)[]>;
 
 /**
  * @param stages массив строк

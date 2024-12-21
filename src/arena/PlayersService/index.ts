@@ -1,6 +1,6 @@
 import PlayerService from './PlayersService';
 
-export * from './Player';
-export { default as Player } from './Player';
+export * from './PlayerService';
+export { default as Player } from './PlayerService';
 
 export default PlayerService;

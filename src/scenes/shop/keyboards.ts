@@ -5,8 +5,8 @@ import arena from '../../arena';
 import type { CharacterService } from '../../arena/CharacterService';
 import { stores } from '../../arena/MiscService';
 import type { Profs } from '../../data';
-import type { Item } from '@/schemas/item';
-import type { CharacterClass } from '@/schemas/character';
+import type { Item } from '@fwo/schemas';
+import type { CharacterClass } from '@fwo/schemas';
 
 const storeKeys = Object.keys(stores);
 

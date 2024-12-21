@@ -1,9 +1,10 @@
 import arena from '@/arena';
+import type { Action, OrderType } from '@fwo/schemas';
 
-export type Action = keyof typeof arena.actions;
+export type ActionKey = keyof typeof arena.actions;
 
 export class ActionService {
-  static isAction(maybeAction: string): maybeAction is Action {
+  static isAction(maybeAction: string): maybeAction is ActionKey {
     return maybeAction in arena.actions;
   }
 
@@ -13,5 +14,17 @@ export class ActionService {
     }
 
     return false;
+  }
+
+  static toObject(action: ActionKey): Action {
+    const c = arena.actions[action];
+
+    return {
+      name: c.name,
+      // lvl: c.lvl,
+      costType: 'costType' in c ? c.costType : null,
+      cost: 'cost' in c ? c.cost : null,
+      orderType: c.orderType as OrderType,
+    };
   }
 }

@@ -1,0 +1,45 @@
+{
+  "name": "@fwo/app",
+  "version": "0.3.1",
+  "description": "FightWorld Telegram Mini App",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "bunx --bun vite",
+    "test": "bun src/cli/test.ts -i",
+    "reset-harks": "bun src/cli/resetHarks.ts",
+    "format": "biome format --fix",
+    "lint": "biome lint",
+    "types": "tsc --noEmit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/catHD/fwo-tg.git"
+  },
+  "keywords": ["fwo", "game", "nodejs", "mmorpg"],
+  "author": "FWO Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/catHD/fwo-tg/issues"
+  },
+  "homepage": "https://github.com/catHD/fwo-tg#readme",
+  "dependencies": {
+    "@fwo/schemas": "workspace:^",
+    "@fwo/server": "workspace:^",
+    "@telegram-apps/react-router-integration": "^1.0.1",
+    "@telegram-apps/sdk-react": "^2.0.22",
+    "@telegram-apps/telegram-ui": "^2.1.8",
+    "@tonconnect/ui-react": "^2.0.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.1.0",
+    "react-use-websocket": "^4.11.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.5",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

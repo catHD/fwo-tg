@@ -3,7 +3,7 @@ import config from '@/arena/config';
 import MiscService from '@/arena/MiscService';
 import type { Prof } from '@/data/profs';
 import type { CharacterService } from './CharacterService';
-import type { Magic } from './Constuructors/MagicConstructor';
+
 
 const chance = config.magic.learnChance;
 
@@ -50,7 +50,7 @@ export default class MagicService {
    * Возвращает доступные магии на данном круге для изучения
    * @param lvl круг проучиваемой магии
    */
-  static getMagicsToLearn(character: CharacterService, lvl: number): Magic[] {
+  static getMagicsToLearn(character: CharacterService, lvl: number) {
     const magicsByLvl = MagicService.getMagicListByProf(character.prof, lvl);
 
     return magicsByLvl.filter((magic) => {
@@ -66,7 +66,7 @@ export default class MagicService {
    * @param magId строка идентификатор магии
    */
   static getMagicById(magic: string) {
-    return arena.magics[magic as keyof typeof arena['magics']];
+    return arena.magics[magic as keyof typeof arena['magics']].toObject();
   }
 
   /**
@@ -82,7 +82,7 @@ export default class MagicService {
       }
 
       return magic.lvl === lvl && magic.profList.includes(prof);
-    });
+    }).map((magic) => magic.toObject());
   }
 
   static getMagicListByIds(magics: string[]) {

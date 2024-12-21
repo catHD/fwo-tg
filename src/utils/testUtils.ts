@@ -10,7 +10,7 @@ import { type Char, CharModel } from '@/models/character';
 import { type Clan, ClanModel } from '@/models/clan';
 import { InventoryModel } from '@/models/inventory';
 import { ItemModel } from '@/models/item';
-import type { Item } from '@/schemas/item';
+import type { Item } from '@fwo/schemas';
 
 const functions = casual.functions();
 

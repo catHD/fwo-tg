@@ -1,7 +1,7 @@
 import { times } from 'lodash';
 import { AoeDmgMagic } from '../Constuructors/AoeDmgMagicConstructor';
 import type GameService from '../GameService';
-import { dice } from '../MiscService';
+import MiscService from '../MiscService';
 import type { Player } from '../PlayersService';
 
 class FireBall extends AoeDmgMagic {
@@ -34,7 +34,8 @@ class FireBall extends AoeDmgMagic {
       return [target];
     }
 
-    const targets = game.players.getPlayersByClan(target.clan?.id)
+    const targets = game.players
+      .getPlayersByClan(target.clan?.id)
       .filter(({ alive }) => alive)
       .filter(({ id }) => id !== target.id);
 
@@ -71,7 +72,7 @@ class FireBall extends AoeDmgMagic {
   }
 
   aoeEffectVal({ initiator, target, game } = this.params): number {
-    const effect = dice(this.aoeEffect) * initiator.proc;
+    const effect = MiscService.dice(this.aoeEffect) * initiator.proc;
     return this.modifyEffect(effect, { initiator, target, game });
   }
 }

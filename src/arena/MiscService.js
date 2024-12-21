@@ -100,18 +100,18 @@ function randInt(min, max) {
   return Math.floor(Math.random() * (+max - +min) + +min);
 }
 
-module.exports = {
-  weaponTypes: WEAPON_TYPES,
-  stores: STORES,
-  getWeaponAction(target, weapon) {
+export default class MiscService {
+  static weaponTypes = WEAPON_TYPES;
+  static stores = STORES;
+  static getWeaponAction(target, weapon) {
     return WEAPON_TYPES[weapon.type].action(target, weapon);
-  },
+  }
   /**
    * Функция рандома по формату 1d100+10;
    * @param {String} diceStr параметры рандома в формате 1d100
    * @return {Number} число в разбросе от diceStr (1d100)
    */
-  dice(diceStr) {
+  static dice(diceStr) {
     let result = 0;
     const sec = diceStr.split('+');
     if (sec.length === 2) {
@@ -122,17 +122,17 @@ module.exports = {
       result = randFloat(parts[0], parts[1]);
     }
     return result;
-  }, /**
+  } /**
    * Функция рандома по формату 1d100;
    * @param {String} dstr параметры рандома в формате 1d100
    * @return {Number} число в разбросе от diceStr (1d100)
    */
-  rndm(dstr) {
+  static rndm(dstr) {
     const part = dstr.split('d');
     const min = +part[0] || 1;
     const max = +part[1];
     return Math.floor(Math.random() * (max - min + 1) + min);
-  },
-  randFloat,
-  randInt,
+  }
+  static randFloat = randFloat
+  static randInt = randInt
 };

@@ -17,7 +17,7 @@ export { default as fireBall } from './fireBall';
 export { default as frostTouch } from './frostTouch';
 export { default as fireRain } from './fireRain';
 export { default as glitch } from './glitch';
-export { default as lightHeal } from './lightHeal';
+export { lightHeal } from './lightHeal';
 export { default as lightShield } from './lightShield';
 export { default as madness } from './madness';
 export { default as magicArmor } from './magicArmor';

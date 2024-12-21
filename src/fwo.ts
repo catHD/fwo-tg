@@ -1,4 +1,4 @@
-import { server } from '@/server';
+import { app } from '@/server';
 import type { Context, Scenes } from 'telegraf';
 import { Telegraf, session } from 'telegraf';
 import arena from './arena';
@@ -14,6 +14,11 @@ import { connect } from './models';
 import { ItemModel } from './models/item';
 import { stage } from './scenes/stage';
 import { registerAffects } from './utils/registerAffects';
+import { serve } from 'bun';
+import { WebSocketHelper } from './helpers/webSocketHelper';
+import { createBunWebSocket } from 'hono/bun';
+
+const { websocket } = createBunWebSocket();
 
 interface BotSession extends Scenes.SceneSession {
   character: CharacterService;
@@ -59,4 +64,9 @@ bot.command('inventory', (ctx) => ctx.scene.enter('inventory'));
 // bot.startWebhook('/test', null, 3000);
 arena.bot = bot;
 
-export default server;
+const server = serve({
+  fetch: app.fetch,
+  websocket,
+});
+
+WebSocketHelper.setServer(server);

@@ -1,4 +1,5 @@
 import { DmgMagic } from '../Constuructors/DmgMagicConstructor';
+
 /**
  * Кислотный плевок
  * Основное описание магии общее требовани есть в конструкторе

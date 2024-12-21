@@ -5,7 +5,7 @@
  * @todo Это нерабочий модуль, только прототип
  */
 
-const Monster = (data) => {
+export const Monster = (data) => {
   this.name = data?.name ? data.name : this.generateName();
   this.class = data?.class ? data.class : this.generateClass();
 };
@@ -93,6 +93,7 @@ Monster.prototype = {
 };
 
 module.exports = {
+  Monster,
   generateNewMonster() {
     return new Monster();
   },

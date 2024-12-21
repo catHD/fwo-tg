@@ -1,5 +1,5 @@
 import type { SuccessArgs } from '@/arena/Constuructors/types';
-import { getWeaponAction } from '@/arena/MiscService';
+import MiscService from '@/arena/MiscService';
 import { floatNumber } from '@/utils/floatNumber';
 
 export function formatAction(msgObj: SuccessArgs): string {
@@ -21,7 +21,7 @@ export function formatAction(msgObj: SuccessArgs): string {
     case 'heal':
       return `Игрок *${msgObj.target.nick}* был вылечен 🤲 на *💖${msgObj.effect}*`;
     case 'phys': {
-      return `*${msgObj.initiator.nick}* ${getWeaponAction(msgObj.target, msgObj.weapon)} и нанёс *${msgObj.effect}* урона`;
+      return `*${msgObj.initiator.nick}* ${MiscService.getWeaponAction(msgObj.target, msgObj.weapon)} и нанёс *${msgObj.effect}* урона`;
     }
     case 'dmg-magic':
     case 'dmg-magic-long':

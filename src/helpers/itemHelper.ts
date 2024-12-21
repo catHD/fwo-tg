@@ -1,5 +1,5 @@
-import { itemSchema } from '@/schemas/item/itemSchema';
-import { itemSetSchema } from '@/schemas/itemSet/itemSetSchema';
+import { itemSchema } from '@fwo/schemas';
+import { itemSetSchema } from '@fwo/schemas';
 import csv from 'csvtojson';
 
 export const generateItems = async () => {

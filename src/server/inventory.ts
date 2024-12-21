@@ -1,10 +1,10 @@
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
-import { idSchema } from '@/schemas';
-import { characterMiddleware } from './middlewares/characterMiddleware';
+import { idSchema } from '@fwo/schemas';
+import { characterMiddleware, userMiddleware } from '@/server/middlewares';
 
 export const inventory = new Hono()
-  .use(characterMiddleware)
+  .use(userMiddleware, characterMiddleware)
   .patch('/equip/:id', zValidator('param', idSchema), async (c) => {
     const character = c.get('character');
     const { id } = c.req.valid('param');

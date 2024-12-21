@@ -3,11 +3,11 @@ import arena from '@/arena';
 import ValidationError from '@/arena/errors/ValidationError';
 import type { Char } from '@/models/character';
 import type { InventoryDocument } from '@/models/inventory';
-import type { Inventory } from '@/schemas/inventory';
-import type { Item } from '@/schemas/item';
-import { type ItemAttributes, itemAttributesSchema } from '@/schemas/item/itemAttributesSchema';
-import type { ItemSet } from '@/schemas/itemSet';
-import type { Modifiers } from '@/schemas/shared/modifiers';
+import type { Inventory } from '@fwo/schemas';
+import type { Item } from '@fwo/schemas';
+import { type ItemAttributes, itemAttributesSchema } from '@fwo/schemas';
+import type { ItemSet } from '@fwo/schemas';
+import type { Modifiers } from '@fwo/schemas';
 import { assignWithSum } from '@/utils/assignWithSum';
 import _ from 'lodash';
 

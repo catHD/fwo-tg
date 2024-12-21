@@ -1,8 +1,8 @@
-import arena from '@/arena';
 import { ActionService } from '@/arena/ActionService';
-import { RoundStatus } from '@/arena/RoundService';
+import { type RoundService, RoundStatus } from '@/arena/RoundService';
 import OrderError from '@/arena/errors/OrderError';
-import _ from 'lodash';
+import type PlayersService from '@/arena/PlayersService';
+import type { Player } from '@/arena/PlayersService';
 
 export interface Order {
   initiator: string;
@@ -25,19 +25,16 @@ export default class Orders {
   /** История заказов */
   hist: Order[][] = [];
 
-  /**
-   * @desc Проверка доступно ли действие для персонажа
-   */
-  static isValidAct({ initiator, action }: Order): boolean {
-    if (ActionService.isBaseAction(action)) {
-      return true;
-    }
-    const { skills, magics } = arena.characters[initiator];
-    return (skills?.[action] ?? magics?.[action] ?? 0) > 0;
+  playersService: PlayersService;
+  roundService: RoundService;
+
+  constructor(playersService: PlayersService, roundService: RoundService) {
+    this.playersService = playersService;
+    this.roundService = roundService;
   }
 
-  get lastOrders(): Order[] {
-    return this.hist[this.hist.length - 1];
+  get lastOrders() {
+    return this.hist.at(-1);
   }
 
   /**
@@ -53,46 +50,52 @@ export default class Orders {
    * @throws {OrderError}
    */
   orderAction(order: Order): void {
-    const {
-      initiator, target, action, proc,
-    } = order;
-    console.log('orderAction >', initiator);
+    console.log('orderAction >', order.initiator);
 
-    // формируем список заказа для charId
+    const initiator = this.playersService.getById(order.initiator);
+    const target = this.playersService.getById(order.target);
 
-    const Game = arena.characters[initiator].currentGame;
-    // @todo Нужны константы для i18n
-    if (!Game) {
-      throw new OrderError('Вы не в игре', order);
-    }
-    if (Game.round.status !== RoundStatus.START_ORDERS) {
-      throw new OrderError('Раунд ещё не начался', order);
-      // @todo тут надо выбирать из живых целей
-    }
-    if (!Game.players.getById(target)?.alive) {
-      throw new OrderError('Нет цели или цель мертва', order);
-    }
-    if (Number(proc) > Number(Game.players.getById(initiator)?.proc)) {
-      throw new OrderError('Нет процентов', order);
-      // тут нужен геттер из Player
-    }
-    if (this.isMaxTargets(order)) {
-      throw new OrderError('Слишком много целей', order);
-    }
-    if (!Orders.isValidAct(order)) {
-      throw new OrderError(`action spoof:${action}`);
-    }
-    // временный хак для атаки руками
-    // @todo нужно дописать структуру атаки руками
-    const a: Order = {
-      initiator, target, action, proc,
-    };
+    this.validateOrder(initiator, target, order);
+
     // if (action === 'attack') {
     //   a.hand = 'righthand';
     // }
-    Game.players.getById(initiator)?.setProc(Number(Game.players.getById(initiator)?.proc) - proc);
-    console.log('order :::: ', a);
-    this.ordersList.push(a);
+
+    initiator.setProc(initiator.proc - order.proc);
+    console.log('order :::: ', order);
+    this.ordersList.push(order);
+  }
+
+  /**
+   * Валидация заказа
+   * @throws {OrderError}
+   */
+  private validateOrder(
+    initiator: Player | undefined,
+    target: Player | undefined,
+    order: Order,
+  ): asserts initiator {
+    // @todo Нужны константы для i18n
+    if (!initiator) {
+      throw new OrderError('Вы не в игре', order);
+    }
+    if (this.roundService.status !== RoundStatus.START_ORDERS) {
+      throw new OrderError('Раунд ещё не начался', order);
+      // @todo тут надо выбирать из живых целей
+    }
+    if (!target || !target.alive) {
+      throw new OrderError('Нет цели или цель мертва', order);
+    }
+    if (Number(order.proc) > Number(initiator.proc)) {
+      throw new OrderError('Нет процентов', order);
+      // тут нужен геттер из Player
+    }
+    if (this.isMaxTargets(order, initiator)) {
+      throw new OrderError('Слишком много целей', order);
+    }
+    if (!this.isValidAction(order, initiator)) {
+      throw new OrderError(`action spoof:${order.action}`);
+    }
   }
 
   /**
@@ -100,10 +103,7 @@ export default class Orders {
    * @param charId идентификатор игрока
    */
   block(charId: string): void {
-    this.ordersList = _.pullAllWith(this.ordersList, [
-      {
-        initiator: charId,
-      }], _.isEqual);
+    this.ordersList = this.ordersList.filter((order) => order.initiator !== charId);
     console.log('block order', this.ordersList);
   }
 
@@ -116,10 +116,21 @@ export default class Orders {
   }
 
   /**
-   * @desc проверка достижения максимального кол-ва целей при атаке
+   * Проверка достижения максимального кол-ва целей при атаке
    */
-  isMaxTargets({ initiator, action }: Order): boolean {
-    return this.getNumberOfOrder(initiator, action) >= arena.characters[initiator].dynamicAttributes.maxTarget;
+  isMaxTargets({ initiator, action }: Order, player: Player): boolean {
+    return this.getNumberOfOrder(initiator, action) >= player.stats.val('maxTarget');
+  }
+
+  /**
+   * Проверка доступно ли действие для персонажа
+   */
+  isValidAction({ action }: Order, player: Player): boolean {
+    if (ActionService.isBaseAction(action)) {
+      return true;
+    }
+
+    return (player.getSkillLevel(action) || player.getMagicLevel(action)) > 0;
   }
 
   /**
@@ -143,8 +154,8 @@ export default class Orders {
    * Проверяет делал ли игрок заказ в предыдущем раунде
    * @param charId идентификатор персонажа
    */
-  checkPlayerOrderLastRound(charId: string): boolean {
-    return this.lastOrders.some((o) => o.initiator === charId);
+  checkPlayerOrderLastRound(charId: string) {
+    return this.lastOrders?.some((o) => o.initiator === charId);
   }
 
   /**
@@ -162,7 +173,7 @@ export default class Orders {
    * @param charId идентификатор персонажа
    */
   repeatLastOrder(charId: string): void {
-    this.lastOrders.forEach((order) => {
+    this.lastOrders?.forEach((order) => {
       if (order.initiator === charId) {
         try {
           this.orderAction(order);
@@ -179,7 +190,6 @@ export default class Orders {
    */
   resetOrdersForPlayer(charId: string): void {
     this.ordersList = this.ordersList.filter((o) => o.initiator !== charId);
-    const Game = arena.characters[charId].currentGame;
-    Game.players.getById(charId)?.setProc(100);
+    this.playersService.getById(charId)?.setProc(100);
   }
 }

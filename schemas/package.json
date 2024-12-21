@@ -1,0 +1,19 @@
+{
+  "name": "@fwo/schemas",
+  "exports": {
+    ".": {
+      "default": "./index.ts"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/catHD/fwo-tg/issues"
+  },
+  "scripts": {
+    "dev": "tsc",
+    "lint": "biome lint",
+    "format": "biome format --fix",
+    "types": "tsc"
+  },
+  "type": "module",
+  "types": "./out/index.d.ts"
+}

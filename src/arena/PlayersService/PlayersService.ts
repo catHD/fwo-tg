@@ -1,5 +1,5 @@
 import { groupBy, keyBy, partition } from 'lodash';
-import Player from './Player';
+import Player from './PlayerService';
 
 export default class PlayersService {
   readonly init: string[];
@@ -51,9 +51,9 @@ export default class PlayersService {
   }
 
   /**
-  * Функция возвращает рандомного игрока из массива живых
-  * @return
-  */
+   * Функция возвращает рандомного игрока из массива живых
+   * @return
+   */
   get randomAlive(): Readonly<Player> {
     const alive = this.alivePlayers;
     return alive[Math.floor(Math.random() * alive.length)];
@@ -69,6 +69,10 @@ export default class PlayersService {
     const [withClan, withoutClan] = partition(this.alivePlayers, ({ clan }) => clan);
     const groupByClan = groupBy(withClan, ({ clan }) => clan?.name);
     return { withClan, withoutClan, groupByClan };
+  }
+
+  groupByClan() {
+    return Object.groupBy(this.players, ({ clan }) => clan?.name || 'noClan');
   }
 
   /**

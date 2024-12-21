@@ -1,7 +1,7 @@
 import type { BotContext } from '@/fwo';
 import type { Clan } from '@/models/clan';
-import type { Item } from '@/schemas/item';
-import type { ItemSet } from '@/schemas/itemSet';
+import type { Item } from '@fwo/schemas';
+import type { ItemSet } from '@fwo/schemas';
 import type { Telegraf } from 'telegraf';
 import type { CharacterService } from './CharacterService';
 import type GameService from './GameService';

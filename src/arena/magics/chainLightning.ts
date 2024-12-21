@@ -2,14 +2,12 @@ import { floatNumber } from '@/utils/floatNumber';
 import { AoeDmgMagic } from '../Constuructors/AoeDmgMagicConstructor';
 import type GameService from '../GameService';
 import type { Player } from '../PlayersService';
+
 /**
  * Цепь молний
  * Основное описание магии общее требовани есть в конструкторе
  */
-
 class ChainLightning extends AoeDmgMagic {
-  maxTargets = [3, 4, 5];
-
   constructor() {
     super({
       name: 'chainLightning',
@@ -29,12 +27,15 @@ class ChainLightning extends AoeDmgMagic {
     });
   }
 
+  maxTargets = [3, 4, 5];
+
   getTargets() {
     const { initiator, target, game } = this.params;
     const magicLevel = initiator.getMagicLevel(this.name);
     const maxTargets = this.maxTargets[magicLevel - 1];
 
-    return game.players.getPlayersByClan(target.clan?.id)
+    return game.players
+      .getPlayersByClan(target.clan?.id)
       .filter(({ alive }) => alive)
       .filter(({ id }) => id !== target.id)
       .slice(0, maxTargets - 1);

@@ -1,8 +1,8 @@
 import type { Model } from 'mongoose';
 import mongoose, { Document, Schema } from 'mongoose';
 import arena from '@/arena';
-import type { Item  } from '@/schemas/item';
-import { itemAttributesSchema } from '@/schemas/item/itemAttributesSchema';
+import type { Item } from '@fwo/schemas';
+import { itemAttributesSchema } from '@fwo/schemas';
 import _ from 'lodash';
 import { generateItems } from '@/helpers/itemHelper';
 

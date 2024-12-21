@@ -10,7 +10,7 @@ import arena from './index';
  * @description Класс объекта MM, для сбора игр
  * */
 
-type MatchMakingItem = {
+export type MatchMakingItem = {
   charId: string
   psr: number
   startTime: number

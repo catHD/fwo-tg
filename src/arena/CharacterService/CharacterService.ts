@@ -6,8 +6,8 @@ import config from '@/arena/config';
 import { InventoryService } from '@/arena/InventoryService';
 import type { HarksLvl } from '@/data/harks';
 import type { Char } from '@/models/character';
+import type { Character, CharacterClass, CharacterPublic } from '@fwo/schemas';
 import { assignWithSum } from '@/utils/assignWithSum';
-import type { Character, CharacterClass } from '@/schemas/character';
 import { calculateDynamicAttributes } from './utils/calculate-dynamic-attributes';
 
 /**
@@ -442,6 +442,16 @@ export class CharacterService {
       bonus: this.charObj.bonus,
       gold: this.gold,
       lvl: this.lvl,
+      exp: this.exp,
+    };
+  }
+
+  toPublicObject(): CharacterPublic {
+    return {
+      name: this.nickname,
+      class: this.prof as CharacterClass,
+      lvl: this.lvl,
+      clan: this.clan,
     };
   }
 }

@@ -1,9 +1,9 @@
 import { Hono } from 'hono';
 import SkillService from '@/arena/SkillService';
-import { characterMiddleware } from './middlewares/characterMiddleware';
+import { characterMiddleware, userMiddleware } from '@/server/middlewares';
 
 export const skill = new Hono()
-  .use(characterMiddleware)
+  .use(characterMiddleware, userMiddleware)
   .patch('/:id', async (c) => {
     const character = c.get('character');
     const { id } = c.req.param();
